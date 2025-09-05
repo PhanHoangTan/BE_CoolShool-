@@ -3,6 +3,7 @@ import cors from "cors";
 import { config } from "./config/index.js";
 import newsRoutes from "./routes/newsRoutes.js";
 import contactRoutes from "./routes/contactRoutes.js";
+import recruitRoutes from "./routes/recruitRoutes.js";
 import { errorHandler, notFound, requestLogger } from "./middleware/index.js";
 import { specs, swaggerUi } from "./config/swagger.js";
 
@@ -33,6 +34,7 @@ app.get("/", (req, res) => {
     endpoints: {
       news: "/api/news",
       contacts: "/api/contacts",
+      recruits: "/api/recruits",
       categories: "/api/news/categories",
       documentation: "/api-docs",
     },
@@ -41,6 +43,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/news", newsRoutes);
 app.use("/api/contacts", contactRoutes);
+app.use("/api/recruits", recruitRoutes);
 
 // Middleware xử lý lỗi
 app.use(notFound);
@@ -51,5 +54,6 @@ app.listen(config.port, () => {
   console.log(`📚 API Endpoints:`);
   console.log(`   - News: http://localhost:${config.port}/api/news`);
   console.log(`   - Contacts: http://localhost:${config.port}/api/contacts`);
+  console.log(`   - Recruits: http://localhost:${config.port}/api/recruits`);
   console.log(`📖 Documentation: http://localhost:${config.port}/api-docs`);
 });
