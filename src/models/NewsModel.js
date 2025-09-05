@@ -1,6 +1,6 @@
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -49,7 +49,7 @@ class NewsModel {
   constructor() {
     // Load dữ liệu từ file JSON
     this.loadNewsData();
-    this.nextId = Math.max(...this.news.map(item => item.id)) + 1;
+    this.nextId = Math.max(...this.news.map((item) => item.id)) + 1;
   }
 
   /**
@@ -58,18 +58,18 @@ class NewsModel {
    */
   loadNewsData() {
     try {
-      const dataPath = path.join(__dirname, '../data/newsData.json');
-      const rawData = fs.readFileSync(dataPath, 'utf8');
+      const dataPath = path.join(__dirname, "../data/newsData.json");
+      const rawData = fs.readFileSync(dataPath, "utf8");
       const jsonData = JSON.parse(rawData);
-      
+
       // Convert date strings to Date objects
-      this.news = jsonData.news.map(item => ({
+      this.news = jsonData.news.map((item) => ({
         ...item,
         createdAt: new Date(item.createdAt),
-        updatedAt: new Date(item.updatedAt)
+        updatedAt: new Date(item.updatedAt),
       }));
     } catch (error) {
-      console.error('Error loading news data:', error);
+      console.error("Error loading news data:", error);
       this.news = [];
     }
   }
@@ -80,17 +80,17 @@ class NewsModel {
    */
   saveNewsData() {
     try {
-      const dataPath = path.join(__dirname, '../data/newsData.json');
+      const dataPath = path.join(__dirname, "../data/newsData.json");
       const jsonData = {
-        news: this.news.map(item => ({
+        news: this.news.map((item) => ({
           ...item,
           createdAt: item.createdAt.toISOString(),
-          updatedAt: item.updatedAt.toISOString()
-        }))
+          updatedAt: item.updatedAt.toISOString(),
+        })),
       };
-      fs.writeFileSync(dataPath, JSON.stringify(jsonData, null, 2), 'utf8');
+      fs.writeFileSync(dataPath, JSON.stringify(jsonData, null, 2), "utf8");
     } catch (error) {
-      console.error('Error saving news data:', error);
+      console.error("Error saving news data:", error);
     }
   }
 
@@ -174,10 +174,10 @@ class NewsModel {
     }
 
     this.news.push(newsItem);
-    
+
     // Lưu vào file JSON
     this.saveNewsData();
-    
+
     return newsItem;
   }
 
@@ -208,10 +208,10 @@ class NewsModel {
     }
 
     const deletedItem = this.news.splice(index, 1)[0];
-    
+
     // Lưu vào file JSON
     this.saveNewsData();
-    
+
     return deletedItem;
   }
 

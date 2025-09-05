@@ -32,12 +32,14 @@ src/
 ## 🔧 Model Features
 
 ### Data Management
+
 - ✅ **Auto-load từ JSON:** Tự động load dữ liệu từ `newsData.json` khi khởi tạo
 - ✅ **Auto-save:** Tự động lưu khi có thay đổi (create, update, delete)
 - ✅ **Date conversion:** Tự động convert string ↔ Date object
 - ✅ **Auto-increment ID:** Tự động tạo ID mới cho tin tức
 
 ### Data Types & Validation
+
 - ✅ **TypeScript-style JSDoc:** Định nghĩa rõ ràng kiểu dữ liệu
 - ✅ **Enum validation:** Status và Category có giá trị cố định
 - ✅ **Required fields:** Title, description, content là bắt buộc
@@ -51,11 +53,12 @@ src/
 ## 🔄 Data Operations
 
 ### CRUD Operations
+
 ```javascript
 // Create - Tự động lưu vào JSON
 const newNews = await NewsModel.create(newsData);
 
-// Update - Tự động lưu vào JSON  
+// Update - Tự động lưu vào JSON
 const updatedNews = await NewsModel.update(id, updateData);
 
 // Delete - Tự động lưu vào JSON
@@ -66,6 +69,7 @@ const news = await NewsModel.findById(id);
 ```
 
 ### Search Operations
+
 ```javascript
 // Basic search với phân trang
 const results = await NewsModel.findAll(options);
@@ -77,6 +81,7 @@ const searchResults = await NewsModel.search(keyword, options);
 ## 📝 Adding New News Item
 
 ### Via API (POST /api/news)
+
 ```json
 {
   "title": "Tin tức mới",
@@ -89,6 +94,7 @@ const searchResults = await NewsModel.search(keyword, options);
 ```
 
 ### Directly in JSON (manual)
+
 ```json
 {
   "id": 7,
@@ -109,6 +115,7 @@ const searchResults = await NewsModel.search(keyword, options);
 ## 🎯 Benefits of This Structure
 
 ### ✅ Advantages
+
 - **Separation of Concerns:** Data tách riêng khỏi logic
 - **Easy to Maintain:** Dữ liệu dễ chỉnh sửa trực tiếp
 - **Type Safety:** JSDoc cung cấp IntelliSense
@@ -116,18 +123,21 @@ const searchResults = await NewsModel.search(keyword, options);
 - **Scalable:** Dễ dàng chuyển sang database thực
 
 ### 🚀 Migration Path
+
 - **Phase 1:** JSON file (hiện tại)
-- **Phase 2:** SQLite database  
+- **Phase 2:** SQLite database
 - **Phase 3:** MySQL/PostgreSQL
 - **Phase 4:** MongoDB
 
 ## 🔍 Search Features
 
 ### Basic Search (trong findAll)
+
 - Tìm trong: title, description, content
 - Phân trang và lọc danh mục
 
 ### Advanced Search (method riêng)
+
 - Ranking theo mức độ liên quan
 - Highlight kết quả tìm thấy
 - Search info metadata
