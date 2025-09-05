@@ -23,17 +23,20 @@ Backend API cho hệ thống quản lý tin tức của Trường Mầm non Qu�
 ## 🚀 Getting Started
 
 1. **Clone repository:**
+
    ```bash
    git clone https://github.com/PhanHoangTan/BE_CoolShool-.git
    cd BE_CoolShool-
    ```
 
 2. **Install dependencies:**
+
    ```bash
    npm install
    ```
 
 3. **Start the server:**
+
    ```bash
    npm run dev
    ```
@@ -46,6 +49,7 @@ Backend API cho hệ thống quản lý tin tức của Trường Mầm non Qu�
 ## 📋 API Endpoints
 
 ### News Management
+
 - `GET    /api/news` - Lấy danh sách tin tức (có phân trang, lọc, tìm kiếm)
 - `GET    /api/news/:id` - Lấy tin tức theo ID
 - `GET    /api/news/slug/:slug` - Lấy tin tức theo slug
@@ -55,31 +59,37 @@ Backend API cho hệ thống quản lý tin tức của Trường Mầm non Qu�
 - `DELETE /api/news/:id` - Xóa tin tức
 
 ### Search API (Mới)
+
 - `GET    /api/news/search` - Tìm kiếm tin tức với highlight và ranking
 
 ## 🔍 Search Features
 
 ### Tìm kiếm tích hợp (GET /api/news)
+
 ```bash
 curl "http://localhost:3000/api/news?search=quốc%20tế&category=program&page=1&limit=3"
 ```
 
 ### Tìm kiếm chuyên biệt (GET /api/news/search)
+
 ```bash
 curl "http://localhost:3000/api/news/search?keyword=montessori&page=1&limit=5"
 ```
 
 **Response với highlight:**
+
 ```json
 {
-  "data": [{
-    "id": 4,
-    "title": "Chương trình học chuẩn quốc tế",
-    "searchHighlight": {
-      "keyword": "montessori",
-      "foundIn": ["content"]
+  "data": [
+    {
+      "id": 4,
+      "title": "Chương trình học chuẩn quốc tế",
+      "searchHighlight": {
+        "keyword": "montessori",
+        "foundIn": ["content"]
+      }
     }
-  }],
+  ],
   "searchInfo": {
     "keyword": "montessori",
     "totalMatches": 1
@@ -115,8 +125,9 @@ src/
 ## 🎯 Sample Data
 
 API bao gồm 6 tin tức mẫu về các chương trình của Cool School:
+
 - Hệ quốc tế Anh - Nhật
-- Hệ đào tạo song ngữ  
+- Hệ đào tạo song ngữ
 - Hệ quốc tế Anh - Anh
 - Chương trình học chuẩn quốc tế
 - Chương trình Văn - Thể - Mỹ
@@ -125,6 +136,7 @@ API bao gồm 6 tin tức mẫu về các chương trình của Cool School:
 ## 🔧 Configuration
 
 Cấu hình trong `src/config/index.js`:
+
 - Port: 3000 (mặc định)
 - CORS: Enabled
 - Pagination: 6 items/page (mặc định)
@@ -145,12 +157,14 @@ This project is licensed under the MIT License.
 ## 👥 Team
 
 **Cool Team** - Development Team
+
 - Email: coolteam@gmail.com
 - Phone: 19006750
 
 ---
 
 ⭐ **Nếu project này hữu ích, hãy cho chúng tôi một star!** ⭐
+
 - `DELETE /api/news/:id` - Delete news
 
 ## Note

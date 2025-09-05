@@ -1,111 +1,97 @@
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+/**
+ * News Item Data Structure
+ * @typedef {Object} NewsItem
+ * @property {number} id - ID tin tức (integer, required)
+ * @property {string} title - Tiêu đề tin tức (string, required, max: 200)
+ * @property {string} slug - URL slug (string, auto-generated from title)
+ * @property {string} date - Ngày đăng (date format: YYYY-MM-DD)
+ * @property {string} author - Tác giả (string, default: "Cool Team")
+ * @property {string} image - URL hình ảnh (string, URL format)
+ * @property {string} description - Mô tả ngắn (string, required, max: 500)
+ * @property {string} content - Nội dung chi tiết (string, required)
+ * @property {string} status - Trạng thái (enum: 'published'|'draft'|'archived', default: 'published')
+ * @property {string} category - Danh mục (enum: 'program'|'culture'|'news'|'event', default: 'program')
+ * @property {Date} createdAt - Ngày tạo (Date, auto-generated)
+ * @property {Date} updatedAt - Ngày cập nhật (Date, auto-updated)
+ */
+
+/**
+ * Search Highlight Data Structure
+ * @typedef {Object} SearchHighlight
+ * @property {string} keyword - Từ khóa tìm kiếm
+ * @property {string[]} foundIn - Các trường tìm thấy ['title'|'description'|'content']
+ */
+
+/**
+ * Pagination Data Structure
+ * @typedef {Object} Pagination
+ * @property {number} currentPage - Trang hiện tại
+ * @property {number} totalPages - Tổng số trang
+ * @property {number} totalItems - Tổng số item
+ * @property {number} itemsPerPage - Số item trên mỗi trang
+ */
+
+/**
+ * Search Info Data Structure
+ * @typedef {Object} SearchInfo
+ * @property {string} keyword - Từ khóa đã tìm kiếm
+ * @property {number} totalMatches - Tổng số kết quả tìm thấy
+ */
+
 class NewsModel {
   constructor() {
-    // Khởi tạo dữ liệu tin tức (có thể thay thế bằng database thực)
-    this.news = [
-      {
-        id: 1,
-        title: "Hệ quốc tế Anh - Nhật",
-        slug: "he-quoc-te-anh-nhat",
-        date: "2019-02-22",
-        author: "Cool Team",
-        image:
-          "https://bizweb.dktcdn.net/thumb/large/100/347/562/articles/1.jpg?v=1550778252097",
-        description:
-          "Bên cạnh tiếng Anh, tiếng Nhật cũng là một trong những ngôn ngữ của thời kỳ hội nhập toàn cầu.",
-        content:
-          "Bên cạnh tiếng Anh, tiếng Nhật cũng là một trong những ngôn ngữ của thời kỳ hội nhập toàn cầu. Trường Mầm non Quốc tế Cool School đã triển khai chương trình đào tạo song ngữ Anh - Nhật để giúp các em học sinh có thể tiếp cận với văn hóa và ngôn ngữ Nhật Bản một cách tự nhiên và hiệu quả nhất.",
-        status: "published",
-        category: "program",
-        createdAt: new Date("2019-02-22"),
-        updatedAt: new Date("2019-02-22"),
-      },
-      {
-        id: 2,
-        title: "Hệ đào tạo song ngữ",
-        slug: "he-dao-tao-song-ngu",
-        date: "2019-02-22",
-        author: "Cool Team",
-        image:
-          "https://bizweb.dktcdn.net/thumb/large/100/347/562/articles/6.jpg?v=1550778312287",
-        description:
-          "Với mong muốn giúp trẻ đa dạng ngôn ngữ trong thời kỳ hội nhập, Trường Mầm non Quốc tế Cool School đã xây dựng hệ đào tạo song ngữ.",
-        content:
-          "Với mong muốn giúp trẻ đa dạng ngôn ngữ trong thời kỳ hội nhập, Trường Mầm non Quốc tế Cool School đã xây dựng hệ đào tạo song ngữ với môi trường học tập tự nhiên, giúp các em tiếp thu kiến thức một cách hiệu quả nhất.",
-        status: "published",
-        category: "program",
-        createdAt: new Date("2019-02-22"),
-        updatedAt: new Date("2019-02-22"),
-      },
-      {
-        id: 3,
-        title: "Hệ quốc tế Anh - Anh",
-        slug: "he-quoc-te-anh-anh",
-        date: "2019-02-22",
-        author: "Cool Team",
-        image:
-          "https://bizweb.dktcdn.net/thumb/large/100/347/562/articles/9.jpg?v=1550778282473",
-        description:
-          "Trong xu thế tiếng Anh đã trở thành ngôn ngữ toàn cầu, ngay từ khi còn nhỏ, các bậc phụ huynh đã quan tâm đến việc dạy tiếng Anh cho con.",
-        content:
-          "Trong xu thế tiếng Anh đã trở thành ngôn ngữ toàn cầu, ngay từ khi còn nhỏ, các bậc phụ huynh đã quan tâm đến việc dạy tiếng Anh cho con. Chương trình Anh - Anh của Cool School được thiết kế để tạo môi trường học tập hoàn toàn bằng tiếng Anh.",
-        status: "published",
-        category: "program",
-        createdAt: new Date("2019-02-22"),
-        updatedAt: new Date("2019-02-22"),
-      },
-      {
-        id: 4,
-        title: "Chương trình học chuẩn quốc tế",
-        slug: "chuong-trinh-hoc-chuan-quoc-te",
-        date: "2019-02-22",
-        author: "Cool Team",
-        image:
-          "https://bizweb.dktcdn.net/thumb/large/100/347/562/articles/7.jpg?v=1550779824993",
-        description:
-          "Được thiết kế và triển khai theo triết lý giáo dục của tiến sĩ Maria Montessori (31/8/1870 – 6/5/1952).",
-        content:
-          "Được thiết kế và triển khai theo triết lý giáo dục của tiến sĩ Maria Montessori (31/8/1870 – 6/5/1952), chương trình giáo dục của Cool School tập trung vào việc phát triển toàn diện các kỹ năng của trẻ thông qua các hoạt động thực hành.",
-        status: "published",
-        category: "program",
-        createdAt: new Date("2019-02-22"),
-        updatedAt: new Date("2019-02-22"),
-      },
-      {
-        id: 5,
-        title: "Chương trình Văn - Thể - Mỹ",
-        slug: "chuong-trinh-van-the-my",
-        date: "2019-02-22",
-        author: "Cool Team",
-        image:
-          "https://bizweb.dktcdn.net/thumb/large/100/347/562/articles/8.jpg?v=1550779730693",
-        description:
-          "Cùng với sự phát triển của chương trình học thuật, chương trình phát triển Văn – Thể – Mỹ cũng là một phần quan trọng.",
-        content:
-          "Cùng với sự phát triển của chương trình học thuật, chương trình phát triển Văn – Thể – Mỹ cũng là một phần quan trọng trong việc giáo dục toàn diện cho trẻ. Chương trình này giúp trẻ phát triển các kỹ năng sáng tạo, thể chất và thẩm mỹ.",
-        status: "published",
-        category: "program",
-        createdAt: new Date("2019-02-22"),
-        updatedAt: new Date("2019-02-22"),
-      },
-      {
-        id: 6,
-        title: "Chương trình học văn hóa nhật",
-        slug: "chuong-trinh-hoc-van-hoa-nhat",
-        date: "2019-02-22",
-        author: "Cool Team",
-        image:
-          "https://bizweb.dktcdn.net/thumb/large/100/347/562/articles/3.jpg?v=1550779664717",
-        description:
-          "Kỹ năng sống là một trong những kiến thức nền tảng quan trọng nhất, quyết định sự tồn tại, phát triển.",
-        content:
-          "Kỹ năng sống là một trong những kiến thức nền tảng quan trọng nhất, quyết định sự tồn tại, phát triển của con người trong xã hội hiện đại. Chương trình văn hóa Nhật của Cool School giúp trẻ học được những kỹ năng sống quý báu từ văn hóa Nhật Bản.",
-        status: "published",
-        category: "culture",
-        createdAt: new Date("2019-02-22"),
-        updatedAt: new Date("2019-02-22"),
-      },
-    ];
-    this.nextId = 7;
+    // Load dữ liệu từ file JSON
+    this.loadNewsData();
+    this.nextId = Math.max(...this.news.map(item => item.id)) + 1;
+  }
+
+  /**
+   * Load dữ liệu tin tức từ file JSON
+   * @private
+   */
+  loadNewsData() {
+    try {
+      const dataPath = path.join(__dirname, '../data/newsData.json');
+      const rawData = fs.readFileSync(dataPath, 'utf8');
+      const jsonData = JSON.parse(rawData);
+      
+      // Convert date strings to Date objects
+      this.news = jsonData.news.map(item => ({
+        ...item,
+        createdAt: new Date(item.createdAt),
+        updatedAt: new Date(item.updatedAt)
+      }));
+    } catch (error) {
+      console.error('Error loading news data:', error);
+      this.news = [];
+    }
+  }
+
+  /**
+   * Lưu dữ liệu tin tức vào file JSON
+   * @private
+   */
+  saveNewsData() {
+    try {
+      const dataPath = path.join(__dirname, '../data/newsData.json');
+      const jsonData = {
+        news: this.news.map(item => ({
+          ...item,
+          createdAt: item.createdAt.toISOString(),
+          updatedAt: item.updatedAt.toISOString()
+        }))
+      };
+      fs.writeFileSync(dataPath, JSON.stringify(jsonData, null, 2), 'utf8');
+    } catch (error) {
+      console.error('Error saving news data:', error);
+    }
   }
 
   // Lấy tất cả tin tức với phân trang và lọc
@@ -188,6 +174,10 @@ class NewsModel {
     }
 
     this.news.push(newsItem);
+    
+    // Lưu vào file JSON
+    this.saveNewsData();
+    
     return newsItem;
   }
 
@@ -204,6 +194,9 @@ class NewsModel {
       updatedAt: new Date(),
     };
 
+    // Lưu vào file JSON
+    this.saveNewsData();
+
     return this.news[index];
   }
 
@@ -215,6 +208,10 @@ class NewsModel {
     }
 
     const deletedItem = this.news.splice(index, 1)[0];
+    
+    // Lưu vào file JSON
+    this.saveNewsData();
+    
     return deletedItem;
   }
 
